@@ -1,42 +1,55 @@
-# Simple To-Do list
+import mysql.connector
+from config import HOST, DATABASE, USERNAME, PASSWORD
 
-# Users list of tasks
-user_list = []
+def db_connect():
+    connection = mysql.connector.connect(
+                host = HOST,
+                database = DATABASE,
+                user = USERNAME,
+                password = PASSWORD)
+    return connection
 
-#1 Add tasks
-def add_task(task):
-    while True:
-        user_list.append(task)
-        # print(user_list)
-        ans = input("\nWant to add more?\n")
-        if ans == "yes":
-            task = input("\nWhat to do?:\n")
-        new_list = '\n'.join(user_list)
-        if ans == 'no':
-            ans = False
-            break
-    print(new_list)
+def add_note(connection):
+    cursor = connection.cursor()
+    note = input("\nNote:\n")
+    query = "INSERT INTO notes (note) VALUES (%s)"
+    cursor.execute(query, (note,))
+    connection.commit()
 
+def edit_note(connection):
+    cursor = connection.cursor()
+    edit_sql = "UPDATE notes SET"
+    cursor.execute(edit_sql)
+    final_results = cursor.fetchone()
+    connection.commit()
 
-# Edit tasks
-def edit_task():
-    pass
+def delete_note(connection):
+    cursor = connection.cursor()
+    delete_query = "DELETE FROM notes WHERE id = "
+    cursor.execute(delete_query)
+    print("deleted")
+    connection.commit()
 
-# Delete tasks
-def delete_task():
-    pass
-
-# Users view of tasks
-def display_tasks():
-    pass
+def display_notes(cursor):
+    cursor.execute()
+    all_notes = cursor.fetchall()
 
 def main():
-    user_task = input("\nWhat to do?:\n")
-    add_task(user_task)
-    edit_task()
-    delete_task()
-    display_tasks()
-
+    connection = db_connect()
+    while True:
+        user_action = input("\nPlease specify action: [View, Add, Edit, Delete, Exit]\n")
+        if user_action.lower() == "view":
+            display_notes(connection)
+        elif user_action.lower() == "add":
+            add_note(connection)
+        elif user_action.lower() == "edit":
+            edit_note(connection)
+        elif user_action.lower() == "delete":
+            delete_note(connection)
+        elif user_action.lower() == "exit":
+            break
+        else:
+            print("Please type a valid input")
 
 if __name__ == '__main__':
     main()
