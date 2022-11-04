@@ -46,10 +46,7 @@ def display_notes(connection):
     all_notes = cursor.fetchall()
     for note in all_notes:
         num_list += 1
-        # print(num_list)
         print(f"{str(num_list)}. {''.join(note)}")
-        # view_list = num_list + note
-        # print(view_list)
 
 def main():
     connection = db_connect()
