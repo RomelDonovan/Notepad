@@ -18,35 +18,41 @@ def add_note(connection):
 
 def edit_note(connection):
     cursor = connection.cursor()
+    id_map = display_notes(connection)
     try:
-        id_num = int(input("Which number would you like to edit?: "))
-        new_note = input("New Note: ")
+        id_num = int(input("\nPlease enter a number to edit:\n"))
+        id = id_map[id_num]
+        new_note = input("\nNew Note:\n")
         query = "UPDATE notes SET note = %s WHERE id = %s"
-        cursor.execute(query, (new_note,id_num))
+        cursor.execute(query, (new_note, id))
         connection.commit()
     except:
-        print("Sorry invalid number.")
+        print("\nPlease input a valid number.\n")
 
 def delete_note(connection):
     cursor = connection.cursor()
+    id_map = display_notes(connection)
     try:
-        delete_id = input("Please enter the number you want to delete: ")
+        delete_id = int(input("\nPlease enter a number to delete:\n"))
+        id = id_map[delete_id]
         query = "DELETE FROM notes WHERE id = %s" 
-        cursor.execute(query, (delete_id,))
-        print("Deleted!")
+        cursor.execute(query, (id,))
+        print(f"{delete_id}. was Deleted!")
         connection.commit()
     except:
-        print("Sorry invalid number.")
+        print("\nPlease input a valid number.\n")
 
 def display_notes(connection):
     cursor = connection.cursor()
-    num_list = 0
-    query = "SELECT note FROM notes"
-    cursor.execute(query)
+    query = "SELECT id, note FROM notes"
+    cursor.execute(query,)
     all_notes = cursor.fetchall()
-    for note in all_notes:
-        num_list += 1
-        print(f"{str(num_list)}. {''.join(note)}")
+    id_map = {}
+    for index, (id, note) in enumerate(all_notes,1):
+        note_item = f"{index}. {''.join(note)}"
+        id_map[index] = id
+        print(note_item)
+    return id_map
 
 def main():
     connection = db_connect()
@@ -63,7 +69,7 @@ def main():
         elif user_action.lower() == "exit":
             break
         else:
-            print("Please type a valid input")
+            print("\nPlease type a valid input\n")
 
 if __name__ == '__main__':
     main()

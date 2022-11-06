@@ -1,2 +1,10 @@
-# To-Do-List
-Simple To-Do List. Create a reminder and task list
+# Notepad
+Simple Notepad. Take notes for reminders
+
+### Included
+Add
+Edit
+Delete
+View
+
+image.png
