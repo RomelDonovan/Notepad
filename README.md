@@ -1,5 +1,5 @@
 # Notepad
-Simple notepad. MySQL(Database)
+Simple cli notepad (Uses a mysql database)
 
 ### Included
 - Add
