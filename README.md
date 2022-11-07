@@ -1,5 +1,5 @@
-# notepad
-Simple notepad. Take notes for reminders. MySQL(Database)
+# Notepad
+Simple notepad. MySQL(Database)
 
 ### Included
 - Add
